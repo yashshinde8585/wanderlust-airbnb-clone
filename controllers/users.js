@@ -35,8 +35,8 @@ module.exports.renderLoginForm = (req, res) => {
 // Handle user login
 module.exports.login = async (req, res) => {
   req.flash("success", "Welcome back!"); // Flash success message on login
-  const redirectUrl = req.session.returnTo || "/listings"; // Redirect to intended URL or default
-  delete req.session.returnTo; // Clear the returnTo URL from session
+  // redirectUrl is set in res.locals by saveRedirectUrl middleware
+  const redirectUrl = res.locals.redirectUrl || "/listings";
   res.redirect(redirectUrl); // Redirect user
 };
 
