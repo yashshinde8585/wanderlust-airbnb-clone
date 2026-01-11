@@ -1,82 +1,312 @@
 <style>
-  /* Style for input field */
-  .input-cls {
-    height: 2.5rem;
-    margin-top: 1rem;
-    padding: 1rem;
-    font-size: 1rem;
-    border-radius: 0.25rem;
-    border: 1px solid #ccc;
-    margin-right: 1rem; /* Space between input and button */
+  /* Premium Airbnb-style Navbar */
+  .navbar {
+    background-color: #fff !important;
+    height: 4.5rem;
+    padding: 0 1.5rem !important;
+    border-bottom: 1px solid #ebebeb;
+    transition: all 0.3s ease;
   }
 
-  /* Style for search button */
-  .btn-search {
+  .navbar-brand i {
+    color: #fe424d;
+    font-size: 2rem;
+  }
+
+  .search-bar {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 40px;
+    padding: 0 0 0 1.25rem;
+    /* Left padding for text */
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+    width: 100%;
+    max-width: 420px;
+    height: 3.2rem;
+    /* Fixed comfortable height */
+    margin: 0 auto;
+    position: relative;
+    /* For precise positioning */
+  }
+
+  /* Hover Elevation */
+  .search-bar:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Input Field */
+  .search-input {
+    border: none;
+    outline: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    flex-grow: 1;
+    color: #222;
+    background: transparent;
+    padding: 0 0.5rem;
+    height: 100%;
+    /* Fill container height */
+  }
+
+  /* Search Button (Circular) */
+  .search-btn {
     background-color: #fe424d;
     color: #fff;
-    height: 2.5rem;
-    padding: 0 1rem;
-    border-radius: 0.25rem;
     border: none;
+
+    /* Strict Dimensions */
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+    min-width: 2.5rem !important;
+    min-height: 2.5rem !important;
+    max-width: 2.5rem !important;
+    max-height: 2.5rem !important;
+    box-sizing: border-box !important;
+    /* Ensure padding doesn't increase size */
+
+    border-radius: 50% !important;
+    margin-right: 0.35rem;
+    /* Right spacing */
+    margin-left: 0.5rem;
+    /* Distance from text */
+    padding: 0 !important;
+    /* Reset padding to rely on flex center */
+
+    /* Flex alignment */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0 !important;
+
     cursor: pointer;
-    width: 10rem;
-    align-items: center;
+    transition: transform 0.2s;
   }
 
-  .btn-search:hover {
-    background-color: #fe2e39;
+  .search-btn:hover {
+    transform: scale(1.05);
   }
 
-  .btn-search i {
-    display: inline;
+  .search-btn i {
+    font-size: 1.1rem;
+    /* Slightly larger icon */
+    font-weight: 700;
+    /* Bold */
+    line-height: 1;
+    /* Prevent vertical offset */
+  }
+
+  /* Navigation Links - Interactive Pill Backgrounds */
+  .nav-link {
+    color: #222 !important;
+    font-weight: 500 !important;
+    font-size: 0.9rem;
+    padding: 0.6rem 1rem !important;
+    border-radius: 2rem;
+    transition: background-color 0.2s;
+  }
+
+  .nav-link:hover {
+    background-color: #f7f7f7;
+    color: #222 !important;
+  }
+
+  /* Globe Icon Button */
+  .nav-globe-btn {
+    color: #222;
+    padding: 0.75rem;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
     align-items: center;
-    margin-right: 0.5rem;
-    border-radius: 25px;
+    justify-content: center;
+    transition: background-color 0.2s;
+    margin-right: 0.25rem;
+  }
+
+  .nav-globe-btn:hover {
+    background-color: #f7f7f7;
+  }
+
+  .nav-globe-btn i {
+    font-size: 1rem;
+  }
+
+  /* Profile Dropdown Button - Defined Border */
+  .nav-profile-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.3rem 0.3rem 0.3rem 0.75rem;
+    border: 1px solid #ddd;
+    /* Visible border */
+    border-radius: 2rem;
+    background-color: #fff;
+    cursor: pointer;
+    transition: box-shadow 0.2s;
+    margin-left: 0.25rem;
+  }
+
+  .nav-profile-btn:hover {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
+    /* Interactive elevation */
+  }
+
+  .nav-profile-icon {
+    font-size: 1rem;
+    color: #222;
+  }
+
+  .nav-avatar-icon {
+    font-size: 1.8rem;
+    color: #717171;
+  }
+
+  /* Profile Menu Items */
+  .dropdown-item {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+
+  .dropdown-item:active {
+    background-color: #f7f7f7;
+    color: #222;
+  }
+
+  /* Desktop Specific Layout */
+  @media (min-width: 768px) {
+    .nav-center {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: auto;
+      z-index: 1000;
+    }
+  }
+
+  /* Mobile Layout Changes */
+  @media (max-width: 768px) {
+    .navbar {
+      height: auto;
+      padding: 1rem !important;
+    }
+
+    .nav-center {
+      width: 100%;
+      margin: 1rem 0;
+      order: 3;
+    }
+
+    .navbar-collapse {
+      order: 4;
+    }
+
+    .nav-profile-desktop,
+    .nav-globe-btn {
+      display: none !important;
+    }
+
+    .nav-links-mobile {
+      display: block;
+      text-align: center;
+      border-top: 1px solid #eee;
+      padding-top: 1rem;
+    }
+
+    .search-bar {
+      max-width: 100%;
+    }
+  }
+
+  @media (min-width: 769px) {
+    .nav-links-mobile {
+      display: none;
+    }
   }
 </style>
 
-<nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
-  <div class="container-fluid">
+<nav class="navbar navbar-expand-md bg-white sticky-top">
+  <div class="container-fluid position-relative d-flex justify-content-between align-items-center">
+
+    <!-- Brand -->
     <a class="navbar-brand" href="/listings">
       <i class="fa-regular fa-compass"></i>
     </a>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarNav"
-      aria-controls="navbarNav"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
+
+    <!-- Centered Search -->
+    <div class="nav-center">
+      <form role="search" action="/listings" method="GET">
+        <div class="search-bar">
+          <input class="search-input" type="text" name="search" placeholder="Where are you going?"
+            aria-label="Search" />
+          <button class="search-btn" type="submit">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Toggler -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
+    <!-- Right Side Actions -->
     <div class="collapse navbar-collapse" id="navbarNav">
-      <div class="navbar-nav">
-        <a class="nav-link" href="/listings">Explore</a>
+      <!-- Left Side Actions -->
+      <div class="navbar-nav me-auto">
+        <a class="nav-link fw-bold" href="/listings">Stays</a>
       </div>
+      <div class="navbar-nav ms-auto align-items-center">
+        <!-- Text Links with Pill Hover -->
+        <a class="nav-link" href="/listings/new">Become a host</a>
 
-      <div class="navbar-nav ms-auto">
-        <form class="d-flex" role="search">
-          <input
-            class="form-control input-cls me-2"
-            type="search"
-            placeholder="Search destinations"
-            aria-label="Search"
-          />
-          <button class="btn btn-search" type="submit">Search</button>
-        </form>
-      </div>
+        <!-- Globe Icon -->
+        <div class="nav-globe-btn">
+          <i class="fa-solid fa-globe"></i>
+        </div>
 
-      <div class="navbar-nav ms-auto">
-        <a class="nav-link" href="/listings/new">Airbnb your home</a>
-        <% if(!currUser){ %>
-        <a class="nav-link" href="/signup"><b>SignUp</b></a>
-        <a class="nav-link" href="/login"><b>LogIn</b></a>
-        <% } %> <% if(currUser){ %>
-        <a class="nav-link" href="/logout"><b>LogOut</b></a>
-        <% } %>
+        <!-- Desktop User Menu (Pill) -->
+        <div class="dropdown nav-profile-desktop">
+          <div class="nav-profile-btn" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fa-solid fa-bars nav-profile-icon"></i>
+            <i class="fa-solid fa-circle-user nav-avatar-icon"></i>
+          </div>
+          <ul class="dropdown-menu dropdown-menu-end shadow mt-2"
+            style="border-radius: 12px; padding: 0.5rem 0; border: 1px solid #ddd;">
+            <% if(!currUser){ %>
+              <li><a class="dropdown-item fw-bold" href="/signup">Sign up</a></li>
+              <li><a class="dropdown-item" href="/login">Log in</a></li>
+              <% } else { %>
+                <li>
+                  <h6 class="dropdown-header">Welcome, <b>
+                      <%= currUser.username %>
+                    </b></h6>
+                </li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="/listings/new">Airbnb your home</a></li>
+                <li><a class="dropdown-item" href="/logout">Log out</a></li>
+                <% } %>
+          </ul>
+        </div>
+
+        <!-- Mobile User Menu (Direct Links) -->
+        <div class="nav-links-mobile w-100">
+          <% if(!currUser){ %>
+            <a class="nav-link w-100" href="/signup">Sign up</a>
+            <a class="nav-link w-100" href="/login">Log in</a>
+            <% } else { %>
+              <a class="nav-link w-100 disabled text-muted">Welcome, <%= currUser.username %></a>
+              <a class="nav-link w-100" href="/logout">Log out</a>
+              <% } %>
+        </div>
+
       </div>
     </div>
   </div>

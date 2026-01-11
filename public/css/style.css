@@ -1,4 +1,15 @@
 /* Navbar Styling */
+/* Sticky Footer Layout */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+#main-content {
+    flex: 1;
+}
+
 .navbar {
     height: 5rem;
     background-color: white;
@@ -89,56 +100,126 @@ footer {
     text-decoration: underline;
 }
 
-/* Card Styling */
+/* Premium Card Styling */
 .listing-card {
     border: none !important;
     margin-bottom: 2rem;
+    background: transparent;
+    position: relative;
+    cursor: pointer;
 }
 
 .card {
     border: none !important;
+    background: transparent;
     margin-bottom: 2rem;
-    max-width: 100%;
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.3s, box-shadow 0.3s;
 }
 
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+/* Image Wrapper for Aspect Ratio */
+.card-img-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 20 / 19;
+    /* Airbnb Standard Ratio */
+    border-radius: 1rem;
+    overflow: hidden;
+    margin-bottom: 0.75rem;
 }
 
 .card-img-top {
-    border-radius: 1rem;
     width: 100%;
+    height: 100%;
     object-fit: cover;
-    max-height: 300px;
-    transition: border-radius 0.3s;
+    transition: transform 0.3s ease;
+    border-radius: 0;
+    /* Parent handles radius */
+}
+
+/* Hover Effect: Image Zoom only */
+.listing-card:hover .card-img-top {
+    transform: scale(1.05);
 }
 
 .card-body {
-    padding: 1rem;
+    padding: 0 !important;
 }
 
-.card-text p {
-    font-weight: 400;
+/* Heart/Wishlist Icon */
+.card-overlay-icon {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 10;
+    font-size: 1.4rem;
+    color: rgba(255, 255, 255, 0.7);
+    transition: transform 0.2s, color 0.2s;
+}
+
+.card-overlay-icon:hover {
+    transform: scale(1.15);
+    color: #fe424d;
+    opacity: 1;
+}
+
+/* Text Styling - Airbnb Standard */
+.card-body {
+    padding: 0.5rem 0 !important;
+}
+
+.card-text {
     margin: 0;
+    text-align: left;
+    /* Ensure left align */
+}
+
+/* Primary Line - Title/Location */
+.listing-title {
+    font-weight: 600;
+    font-size: 1rem;
+    color: #222;
+    line-height: 1.2;
+    margin-bottom: 0.15rem;
+
+    /* Truncate to 1 line */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Secondary Line - Description/Distance */
+.listing-location {
+    font-size: 0.95rem;
+    color: #717171;
+    /* Airbnb Gray */
+    margin-bottom: 0.25rem;
+}
+
+/* Price Line */
+.listing-price {
+    font-weight: 600;
+    color: #222;
+    font-size: 1rem;
+    margin-top: 0.25rem;
+    display: flex;
+    align-items: baseline;
+}
+
+.listing-price span {
+    font-weight: 400;
+    color: #222;
+    margin-left: 4px;
 }
 
 /* Responsive Adjustments for Card */
 @media (max-width: 768px) {
-    .card {
-        margin-bottom: 1.5rem;
-    }
+    /* .card-img-wrapper {
+        aspect-ratio: 1 / 1;
+    } */
 
-    .card-img-top {
-        border-radius: 0.8rem;
-        max-height: 250px;
-    }
 
     .navbar {
-        height: 4rem;
+        height: auto;
+        padding: 0.5rem 0;
     }
 
     .fa-compass {
@@ -149,16 +230,16 @@ footer {
 @media (max-width: 576px) {
     .card {
         margin-bottom: 1rem;
-        padding: 0.5rem;
+        padding: 0.25rem;
     }
 
     .card-img-top {
         border-radius: 0.6rem;
-        max-height: 200px;
+        /* max-height: 180px; Remove this to fix gap */
     }
 
     .navbar {
-        height: 3.5rem;
+        padding: 0.25rem 0;
     }
 
     .f-info {
@@ -336,6 +417,13 @@ button[type="submit"]:hover {
 
 /* Map  */
 #map {
-    height: 350px;
-    width: 100vh;
+    height: 400px;
+    width: 100%;
+    border-radius: 1rem;
+}
+
+@media (max-width: 768px) {
+    #map {
+        height: 300px;
+    }
 }

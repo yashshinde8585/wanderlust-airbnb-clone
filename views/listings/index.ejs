@@ -1,144 +1,231 @@
 <% layout("/layouts/boilerplate") %>
-<style>
-  #filters {
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    align-items: center;
-    scrollbar-width: thin;
-    -ms-overflow-style: none;
-  }
-  #filters::-webkit-scrollbar {
-    display: none; /* Chrome/Safari: Hide scrollbar */
-  }
-  .filter {
-    text-align: center;
-    margin: 1rem;
-    opacity: 0.7;
-    flex: 0 0 auto; /* Prevent filters from shrinking or growing */
-  }
-  .filter:hover {
-    opacity: 1;
-    cursor: pointer;
-    color: #fe424d;
-  }
-  .filter p {
-    font-size: 0.9rem;
-    margin-top: 0.5rem;
-  }
-  .tax-toggle {
-    margin: 1rem auto;
-    text-align: center;
-  }
-  .tax-info {
-    display: none;
-  }
-  .tax-toggle {
-    border: 1px solid black;
-    border-radius: 1rem;
-    height: 3rem;
-    padding: 1rem;
-    display: flex;
-    align-items: center;
-  }
-</style>
-<div id="filters">
-  <div class="filter">
-    <div><i class="fa-solid fa-fire"></i></div>
-    <p>Trending</p>
-  </div>
-  <div class="filter">
-    <div><i class="fa-solid fa-bed"></i></div>
-    <p>Rooms</p>
-  </div>
-  <div class="filter">
-    <div><i class="fa-solid fa-mountain-city"></i></div>
-    <p>Iconic Cities</p>
-  </div>
-  <div class="filter">
-    <div><i class="fa-solid fa-mountain"></i></div>
-    <p>Mountains</p>
-  </div>
-  <div class="filter">
-    <div><i class="fa-brands fa-fort-awesome-alt"></i></div>
-    <p>Castles</p>
-  </div>
-  <div class="filter">
-    <div><i class="fa-solid fa-person-swimming"></i></div>
-    <p>Amazing Pools</p>
-  </div>
-  <div class="filter">
-    <div><i class="fa-solid fa-campground"></i></div>
-    <p>Camping</p>
-  </div>
-  <div class="filter">
-    <div><i class="fa-solid fa-cow"></i></div>
-    <p>Farms</p>
-  </div>
-  <div class="filter">
-    <div><i class="fa-solid fa-snowflake"></i></div>
-    <p>Arctic</p>
-  </div>
-  <div class="filter">
-    <div><i class="fa-solid fa-igloo"></i></div>
-    <p>Domes</p>
-  </div>
-  <div class="filter">
-    <div><i class="fa-solid fa-ship"></i></div>
-    <p>Boats</p>
-  </div>
-  <div class="tax-toggle">
-    <div class="form-check-reverse form-switch">
-      <input
-        class="form-check-input"
-        type="checkbox"
-        role="switch"
-        id="flexSwitchCheckDefault"
-      />
-      <label class="form-check-label" for="flexSwitchCheckDefault"
-        >Display total after taxes</label
-      >
-    </div>
-  </div>
-</div>
+  <style>
+    /* Main Container for Filters */
+    #filters-container {
+      display: flex;
+      align-items: center;
+      background-color: #fff;
+      padding: 1rem 0;
+      position: sticky;
+      top: 4.5rem;
+      /* Matches Navbar Height */
+      z-index: 100;
+      box-shadow: 0 1px 0 #ebebeb;
+      /* Subtle bottom border */
+    }
 
-<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4 mt-1">
-  <% for(let listing of allListings) { %>
-  <a href="/listings/<%= listing.id %>" class="listing-link">
-    <div class="col listing-card">
-      <div class="card h-100">
-        <img
-          src="<%= listing.image.url %>"
-          class="card-img-top"
-          alt="listing"
-        />
-        <div class="card-body">
-          <p class="card-text">
-            <b><%= listing.title %></b><br />
-            &#8377; <%= listing.price ? listing.price.toLocaleString("en-IN") :
-            "Price not available" %> / night
-            <i class="tax-info">&nbsp; &nbsp; +18% GST</i>
-          </p>
-        </div>
+    /* Scrollable Filter View */
+    #filters {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      width: 100%;
+      align-items: center;
+      padding-left: 1rem;
+      /* Hide Scrollbars */
+      -ms-overflow-style: none;
+      /* IE and Edge */
+      scrollbar-width: none;
+      /* Firefox */
+    }
+
+    /* Hide scrollbar for Chrome/Safari/Opera */
+    #filters::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Individual Filter Style */
+    .filter {
+      text-align: center;
+      margin-right: 2rem;
+      opacity: 0.6;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: fit-content;
+      transition: all 0.2s ease;
+      border-bottom: 2px solid transparent;
+      /* Prepare for hover */
+      padding-bottom: 0.5rem;
+    }
+
+    .filter:hover {
+      opacity: 1;
+      border-bottom: 2px solid #000;
+      color: #000;
+    }
+
+    .filter div i {
+      font-size: 1.5rem;
+      color: #444;
+      margin-bottom: 0.25rem;
+    }
+
+    .filter p {
+      font-size: 0.75rem;
+      margin: 0;
+      font-weight: 500;
+      color: #222;
+      white-space: nowrap;
+    }
+
+    /* Ensure links don't look blue/underlined */
+    a.filter {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* Default state for tax info */
+    .tax-info {
+      display: none !important;
+    }
+
+    /* Sort Button Styles */
+    .filter-btn-container {
+      display: flex;
+      align-items: center;
+      margin-left: auto;
+      /* Push to right */
+      padding-right: 1.5rem;
+      /* Match container padding */
+      padding-left: 2rem;
+      /* Added margin/gap from filters */
+    }
+
+    .sort-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: box-shadow 0.2s;
+      white-space: nowrap;
+      text-decoration: none;
+      color: #222;
+    }
+
+    .sort-btn:hover {
+      border-color: #000;
+      background-color: #f7f7f7;
+    }
+
+    .wishlist-active {
+      color: #fe424d;
+    }
+  </style>
+
+  <!-- Filters Container -->
+  <div id="filters-container">
+    <div id="filters">
+      <a href="/listings" class="filter">
+        <div><i class="fa-solid fa-layer-group"></i></div>
+        <p>All</p>
+      </a>
+      <a href="/listings?category=Trending" class="filter">
+        <div><i class="fa-solid fa-fire"></i></div>
+        <p>Trending stays</p>
+      </a>
+      <a href="/listings?category=Rooms" class="filter">
+        <div><i class="fa-solid fa-bed"></i></div>
+        <p>Private rooms</p>
+      </a>
+      <a href="/listings?category=Iconic" class="filter">
+        <div><i class="fa-solid fa-mountain-city"></i></div>
+        <p>City breaks</p>
+      </a>
+      <a href="/listings?category=Mountains" class="filter">
+        <div><i class="fa-solid fa-mountain"></i></div>
+        <p>Mountain retreats</p>
+      </a>
+      <a href="/listings?category=Castles" class="filter">
+        <div><i class="fa-brands fa-fort-awesome-alt"></i></div>
+        <p>Unique stays</p>
+      </a>
+      <a href="/listings?category=Amazing Pools" class="filter">
+        <div><i class="fa-solid fa-person-swimming"></i></div>
+        <p>Amazing pools</p>
+      </a>
+      <a href="/listings?category=Camping" class="filter">
+        <div><i class="fa-solid fa-campground"></i></div>
+        <p>Outdoor stays</p>
+      </a>
+      <a href="/listings?category=Farms" class="filter">
+        <div><i class="fa-solid fa-cow"></i></div>
+        <p>Farm stays</p>
+      </a>
+      <a href="/listings?category=Arctic" class="filter">
+        <div><i class="fa-solid fa-snowflake"></i></div>
+        <p>Cold escapes</p>
+      </a>
+      <a href="/listings?category=Domes" class="filter">
+        <div><i class="fa-solid fa-igloo"></i></div>
+        <p>Design homes</p>
+      </a>
+      <a href="/listings?category=Boats" class="filter">
+        <div><i class="fa-solid fa-ship"></i></div>
+        <p>Houseboats</p>
+      </a>
+    </div>
+
+    <!-- Sort Button (Right Aligned) -->
+    <div class="filter-btn-container">
+      <div class="dropdown">
+        <button class="sort-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="fa-solid fa-arrow-up-wide-short"></i> Sort
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end shadow border-0 p-2" style="border-radius: 12px; min-width: 200px;">
+          <li>
+            <h6 class="dropdown-header">Sort by</h6>
+          </li>
+          <li><a class="dropdown-item rounded" href="#" onclick="applySort('price_low')">Price: Low to High</a></li>
+          <li><a class="dropdown-item rounded" href="#" onclick="applySort('price_high')">Price: High to Low</a></li>
+          <li><a class="dropdown-item rounded" href="#" onclick="applySort('newest')">Newest First</a></li>
+        </ul>
       </div>
     </div>
-  </a>
-  <% } %>
-</div>
+  </div>
 
-<script>
-  let taxSwitch = document.getElementById("flexSwitchCheckDefault");
-  taxSwitch.addEventListener("click", () => {
-    let taxInfo = document.getElementsByClassName("tax-info");
+  <div class="row row-cols-lg-3 row-cols-md-3 row-cols-sm-2 row-cols-1 g-4 mt-3" id="listings-grid">
+    <% for(let listing of allListings) { %>
+      <a href="/listings/<%= listing.id %>" class="listing-link">
+        <div class="col listing-card">
+          <div class="card h-100">
+            <!-- Image Wrapper with Heart Icon -->
+            <div class="card-img-wrapper">
+              <img src="<%= listing.image.url %>" class="card-img-top" alt="listing" />
+              <!-- Like Button Logic -->
+              <% let isLiked=false; if (currUser && currUser.wishlist) { isLiked=currUser.wishlist.some((id)=>
+                id.toString() === listing._id.toString());
+                }
+                %>
+                <div class="card-overlay-icon" onclick="toggleWishlist(event, '<%= listing._id %>')">
+                  <i class="<%= isLiked ? 'fa-solid wishlist-active' : 'fa-regular' %> fa-heart"></i>
+                </div>
+            </div>
 
-    Array.from(taxInfo).forEach((info) => {
-      let currentDisplay = window.getComputedStyle(info).display;
-
-      if (currentDisplay === "none") {
-        info.style.display = "inline"; // Show the element
-      } else {
-        info.style.display = "none"; // Hide the element
-      }
-    });
-  });
-</script>
+            <div class="card-body">
+              <div class="card-text">
+                <div class="listing-title">
+                  <%= listing.title %>
+                </div>
+                <div class="listing-location">
+                  <%= listing.location %>, <%= listing.country %>
+                </div>
+                <div class="listing-price">
+                  &#8377; <%= listing.price ? listing.price.toLocaleString("en-IN") : "N/A" %>
+                    <span>night</span>
+                    <i class="tax-info">&nbsp; &nbsp; +18% GST</i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+      <% } %>
+  </div>

@@ -7,6 +7,12 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  wishlist: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Listing",
+    },
+  ],
 });
 
 userSchema.plugin(passportLocalMongoose);

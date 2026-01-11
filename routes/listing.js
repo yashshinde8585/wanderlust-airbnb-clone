@@ -41,4 +41,7 @@ router.get(
   wrapAsync(listingController.renderEditForm)
 );
 
+// Wishlist Route
+router.put("/:id/wishlist", isLoggedIn, wrapAsync(listingController.toggleWishlist));
+
 module.exports = router;

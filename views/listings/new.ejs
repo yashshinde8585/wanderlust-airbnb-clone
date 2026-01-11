@@ -1,40 +1,43 @@
 <% layout("/layouts/boilerplate") %>
-<body>
-  <div class="container mt-4">
-    <h3>Create a New Listing</h3>
-    <form
-      action="/listings"
-      method="POST"
-      class="needs-validation"
-      novalidate
-      enctype="multipart/form-data"
-    >
-      <div class="mb-3">
-        <label for="title" class="form-label">Title</label>
-        <input
-          type="text"
-          id="title"
-          name="listing[title]"
-          placeholder="Add a catchy title"
-          class="form-control"
-          required
-        />
-        <div class="invalid-feedback">Please provide a title.</div>
-      </div>
 
-      <div class="mb-3">
-        <label for="description" class="form-label">Description</label>
-        <textarea
-          id="description"
-          name="listing[description]"
-          placeholder="Enter description"
-          class="form-control"
-          required
-        ></textarea>
-        <div class="invalid-feedback">Please provide a description.</div>
-      </div>
+  <body>
+    <div class="container mt-4">
+      <h3>Create a New Listing</h3>
+      <form action="/listings" method="POST" class="needs-validation" novalidate enctype="multipart/form-data">
+        <div class="mb-3">
+          <label for="title" class="form-label">Title</label>
+          <input type="text" id="title" name="listing[title]" placeholder="Add a catchy title" class="form-control"
+            required />
+          <div class="invalid-feedback">Please provide a title.</div>
+        </div>
 
-      <!-- <div class="mb-3">
+        <div class="mb-3">
+          <label for="description" class="form-label">Description</label>
+          <textarea id="description" name="listing[description]" placeholder="Enter description" class="form-control"
+            required></textarea>
+          <div class="invalid-feedback">Please provide a description.</div>
+        </div>
+
+        <div class="mb-3">
+          <label for="category" class="form-label">Category</label>
+          <select name="listing[category]" id="category" class="form-select" required>
+            <option value="" disabled selected>Select a category</option>
+            <option value="Trending">Trending</option>
+            <option value="Rooms">Rooms</option>
+            <option value="Iconic">Iconic Cities</option>
+            <option value="Mountains">Mountains</option>
+            <option value="Castles">Castles</option>
+            <option value="Amazing Pools">Amazing Pools</option>
+            <option value="Camping">Camping</option>
+            <option value="Farms">Farms</option>
+            <option value="Arctic">Arctic</option>
+            <option value="Domes">Domes</option>
+            <option value="Boats">Boats</option>
+          </select>
+          <div class="invalid-feedback">Please select a category.</div>
+        </div>
+
+        <!-- <div class="mb-3">
         <label for="image" class="form-label">Image Link</label>
         <input
           type="url"
@@ -45,57 +48,33 @@
         />
       </div> -->
 
-      <div class="mb-3">
-        <label for="image" class="form-label">Upload Image</label>
-        <input
-          type="file"
-          id="image"
-          name="listing[image]"
-          class="form-control"
-        />
-      </div>
-
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <label for="price" class="form-label">Price</label>
-          <input
-            type="number"
-            id="price"
-            name="listing[price]"
-            placeholder="0"
-            class="form-control"
-            required
-          />
-          <div class="invalid-feedback">Please provide a price.</div>
+        <div class="mb-3">
+          <label for="image" class="form-label">Upload Image</label>
+          <input type="file" id="image" name="listing[image]" class="form-control" />
         </div>
-        <div class="col-md-6 mb-3">
-          <label for="country" class="form-label">Country</label>
-          <input
-            type="text"
-            id="country"
-            name="listing[country]"
-            placeholder="Country"
-            class="form-control"
-            required
-          />
-          <div class="invalid-feedback">Please provide a country.</div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="price" class="form-label">Price</label>
+            <input type="number" id="price" name="listing[price]" placeholder="0" class="form-control" required />
+            <div class="invalid-feedback">Please provide a price.</div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="country" class="form-label">Country</label>
+            <input type="text" id="country" name="listing[country]" placeholder="Country" class="form-control"
+              required />
+            <div class="invalid-feedback">Please provide a country.</div>
+          </div>
         </div>
-      </div>
 
-      <div class="mb-3">
-        <label for="location" class="form-label">Location</label>
-        <input
-          type="text"
-          id="location"
-          name="listing[location]"
-          placeholder="City, State"
-          class="form-control"
-          required
-        />
-        <div class="invalid-feedback">Please provide a location.</div>
-      </div>
+        <div class="mb-3">
+          <label for="location" class="form-label">Location</label>
+          <input type="text" id="location" name="listing[location]" placeholder="City, State" class="form-control"
+            required />
+          <div class="invalid-feedback">Please provide a location.</div>
+        </div>
 
-      <button type="submit" class="btn btn-primary">Add</button>
-    </form>
-  </div>
-</body>
+        <button type="submit" class="btn btn-primary">Add</button>
+      </form>
+    </div>
+  </body>

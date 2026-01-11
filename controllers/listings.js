@@ -1,5 +1,6 @@
 const { query } = require("express");
 const Listing = require("../models/listing.js");
+const User = require("../models/user.js");
 const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
 const mapToken = process.env.MAP_TOKEN;
 const geocodingClient = mbxGeocoding({ accessToken: mapToken });
@@ -7,7 +8,38 @@ const geocodingClient = mbxGeocoding({ accessToken: mapToken });
 // Fetch and display all listings
 module.exports.index = async (req, res) => {
   try {
-    const allListings = await Listing.find({});
+    const { category, search, sort } = req.query;
+    let queryObj = {};
+    let allListings;
+
+    if (search) {
+      const regex = new RegExp(search, "i"); // Case-insensitive search
+      queryObj = {
+        $or: [
+          { title: regex },
+          { location: regex },
+          { country: regex },
+          { category: regex },
+        ],
+      };
+    } else if (category) {
+      queryObj = { category };
+    }
+
+    // Build the query
+    let listingQuery = Listing.find(queryObj);
+
+    // Apply Sorting
+    if (sort === "price_low") {
+      listingQuery = listingQuery.sort({ price: 1 });
+    } else if (sort === "price_high") {
+      listingQuery = listingQuery.sort({ price: -1 });
+    } else if (sort === "newest") {
+      listingQuery = listingQuery.sort({ _id: -1 });
+    }
+
+    allListings = await listingQuery;
+
     res.render("listings/index", { allListings });
   } catch (error) {
     req.flash("error", "Unable to fetch listings. Please try again.");
@@ -129,5 +161,30 @@ module.exports.deleteListing = async (req, res) => {
   } catch (error) {
     req.flash("error", "An error occurred while deleting the listing.");
     res.redirect("/listings");
+  }
+};
+
+// Toggle Wishlist (Like/Unlike)
+module.exports.toggleWishlist = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findById(req.user._id);
+
+    // Check if listing is already in wishlist
+    // We convert ObjectId to string for comparison
+    const isLiked = user.wishlist.some((listingId) => listingId.toString() === id);
+
+    if (isLiked) {
+      // Remove from wishlist
+      await User.findByIdAndUpdate(req.user._id, { $pull: { wishlist: id } });
+      res.status(200).json({ success: true, isLiked: false });
+    } else {
+      // Add to wishlist
+      await User.findByIdAndUpdate(req.user._id, { $addToSet: { wishlist: id } });
+      res.status(200).json({ success: true, isLiked: true });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Error updating wishlist" });
   }
 };
